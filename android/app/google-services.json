@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "389414759725",
+    "project_id": "fypproject-cf2ac",
+    "storage_bucket": "fypproject-cf2ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389414759725:android:378e992af13851a758f7a4",
+        "android_client_info": {
+          "package_name": "com.example.mentorapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0fRPPaFgnhfTzDvLXZyz9xxes71razNg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
