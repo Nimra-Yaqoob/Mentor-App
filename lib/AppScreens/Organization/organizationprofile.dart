@@ -101,11 +101,24 @@ class _OrganizationProfileState extends State<OrganizationProfile> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
                                 child: _image != null
-                                    ? Image.file(_image!)
-                                    : (data['imageUrl'] != null
-                                        ? Image.network(data['imageUrl'])
-                                        : Image.asset(
-                                            'assets/placeholder_image.png')),
+                                    ? Image.file(
+                                        _image!,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : (data['imageUrl'] != null &&
+                                            data['imageUrl']!.isNotEmpty
+                                        ? Image.network(
+                                            data['imageUrl']!,
+                                            fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Icon(Icons.account_circle,
+                                                  size: 110,
+                                                  color: Colors.grey);
+                                            },
+                                          )
+                                        : Icon(Icons.account_circle,
+                                            size: 110, color: Colors.grey)),
                               ),
                             ),
                             Positioned(
@@ -156,7 +169,7 @@ class _OrganizationProfileState extends State<OrganizationProfile> {
                                   width: 10,
                                 ),
                                 Text(
-                                  data['organizationName'],
+                                  data['username'],
                                   style: TextStyle(
                                     fontSize: 14,
                                   ),
@@ -214,45 +227,40 @@ class _OrganizationProfileState extends State<OrganizationProfile> {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.link_rounded, // Replace with the desired icon
-                            size: 24,
-                            color:
-                                secondaryColor, // Replace with the desired icon color
-                          ),
-                          SizedBox(width: 7),
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Domain Link : ',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  data['domainLink'],
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
+                      // Make the domain link row scrollable
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.link_rounded,
+                              size: 24,
+                              color: secondaryColor,
                             ),
-                          ),
-                        ],
+                            SizedBox(width: 7),
+                            Text(
+                              'Domain Link : ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              data['domainLink'],
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 10),
                       Container(
-                        width: 300, // Adjust the width as needed
+                        width: 300,
                         child: Divider(
                           color: Colors.grey.withOpacity(0.5),
-                          height: 10, // Adjust the height as needed
+                          height: 10,
                         ),
                       ),
                       SizedBox(height: 10),
@@ -260,26 +268,22 @@ class _OrganizationProfileState extends State<OrganizationProfile> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Icon(
-                            Icons
-                                .numbers_rounded, // Replace with the desired icon
+                            Icons.numbers_rounded,
                             size: 24,
-                            color:
-                                secondaryColor, // Replace with the desired icon color
+                            color: secondaryColor,
                           ),
                           SizedBox(width: 7),
                           Expanded(
                             child: Row(
-                              // mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text(
-                                  'Registeration Number : ',
+                                  'Registration Number : ',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 Text(
-                                  // Convert 'registrationNumber' to String before displaying
                                   data['registrationNumber'].toString(),
                                   style: TextStyle(
                                     fontSize: 14,

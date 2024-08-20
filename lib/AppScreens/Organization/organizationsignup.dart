@@ -3,12 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:mentorapp/AppScreens/Organization/org_verifyemail.dart';
+import 'package:mentorapp/AppScreens/Organization/organizationlogin.dart';
 import 'package:mentorapp/AppScreens/constant.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:mentorapp/Utils/utils.dart';
 import 'package:mentorapp/firebase_services/session_manager.dart';
 import 'package:file_picker/file_picker.dart';
-import 'organizationlogin.dart';
 
 class OrganizationSignupPage extends StatefulWidget {
   const OrganizationSignupPage({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class OrganizationSignupPage extends StatefulWidget {
 }
 
 class _OrganizationSignupPageState extends State<OrganizationSignupPage> {
-  TextEditingController _organizationNameController = TextEditingController();
+  TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _registrationController = TextEditingController();
@@ -26,139 +27,15 @@ class _OrganizationSignupPageState extends State<OrganizationSignupPage> {
 
   bool _isPasswordVisible = false;
   File? _selectedDocument;
-
-  // void _submitForm() async {
-  //   String organizationName = _organizationNameController.text.trim();
-  //   String email = _emailController.text;
-  //   String password = _passwordController.text;
-  //   String registration = _registrationController.text;
-  //   String domainLink = _domainLinkController.text.trim();
-
-  //   // Check if any field is empty
-  //   if (organizationName.isEmpty ||
-  //       email.isEmpty ||
-  //       password.isEmpty ||
-  //       registration.isEmpty ||
-  //       domainLink.isEmpty) {
-  //     _showErrorSnackBar("Please fill in all fields.");
-  //     return;
-  //   }
-
-  //   // Validation checks for organizationName
-  //   if (_containsSpecialCharacters(organizationName) ||
-  //       _containsNumbers(organizationName)) {
-  //     _showErrorSnackBar(
-  //         "Organization name can only contain alphabetic characters.");
-  //     return;
-  //   }
-
-  //   if (!EmailValidator.validate(email)) {
-  //     _showErrorSnackBar("Please enter a valid email address.");
-  //     return;
-  //   }
-
-  //   // Check password strength
-  //   if (!_isPasswordStrong(password)) {
-  //     _showErrorSnackBar(
-  //         "Password must be at least 8 characters long and include uppercase, lowercase, digits, and special characters.");
-  //     return;
-  //   }
-
-  //   // Check domain link format
-  //   if (!_isValidDomainLinkFormat(domainLink)) {
-  //     _showErrorSnackBar("Please enter a valid domain link.");
-  //     return;
-  //   }
-
-  //   if (_selectedDocument == null) {
-  //     _showErrorSnackBar("Please attach a document.");
-  //     return;
-  //   }
-
-  //   try {
-  //     // Check if the organization name already exists
-  //     QuerySnapshot orgNameSnapshot = await FirebaseFirestore.instance
-  //         .collection('organizations')
-  //         .where('organizationName', isEqualTo: organizationName)
-  //         .get();
-
-  //     if (orgNameSnapshot.docs.isNotEmpty) {
-  //       _showErrorSnackBar("Organization name already exists.");
-  //       return;
-  //     }
-
-  //     // Check if the email already exists
-  //     QuerySnapshot emailSnapshot = await FirebaseFirestore.instance
-  //         .collection('organizations')
-  //         .where('email', isEqualTo: email)
-  //         .get();
-
-  //     if (emailSnapshot.docs.isNotEmpty) {
-  //       _showErrorSnackBar("Email already exists.");
-  //       return;
-  //     }
-
-  //     // Create a new user with email and password
-  //     UserCredential userCredential =
-  //         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: email,
-  //       password: password,
-  //     );
-
-  //     // Obtain the user ID from the userCredential
-  //     String userId = userCredential.user!.uid;
-
-  //     // Store the user ID in your SessionManager or wherever needed
-  //     SessionManager.setUserId(userId);
-
-  //     // Upload the document to Firebase Storage
-  //     String fileName =
-  //         'documents/$userId/${DateTime.now().millisecondsSinceEpoch}.pdf';
-  //     Reference storageReference =
-  //         FirebaseStorage.instance.ref().child(fileName);
-  //     UploadTask uploadTask = storageReference.putFile(_selectedDocument!);
-
-  //     // Wait for the upload to complete
-  //     TaskSnapshot snapshot = await uploadTask;
-  //     String documentUrl = await snapshot.ref.getDownloadURL();
-
-  //     // Create a map with the data
-  //     Map<String, dynamic> data = {
-  //       'organizationName': organizationName,
-  //       'email': email,
-  //       'password': password,
-  //       'registrationNumber': int.parse(registration),
-  //       'domainLink': domainLink,
-  //       'userId': userId,
-  //       'documentUrl': documentUrl,
-  //     };
-
-  //     // Add data to Firestore only if validation passes
-  //     await FirebaseFirestore.instance.collection('organizations').add(data);
-
-  //     // Show successful signup toast message
-  //     Utils().toastMessage("Signup successful");
-
-  //     // Navigate to the login page after successful signup
-  //     Navigator.of(context).pushReplacement(
-  //       MaterialPageRoute(
-  //         builder: (context) => OrgnizationLoginScreen(),
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     print('Error during signup: $e');
-  //     // Handle error
-  //   }
-  // }
   void _submitForm() async {
-    String organizationName = _organizationNameController.text.trim();
+    String username = _usernameController.text.trim();
     String email = _emailController.text;
     String password = _passwordController.text;
     String registration = _registrationController.text;
     String domainLink = _domainLinkController.text.trim();
 
     // Check if any field is empty
-    if (organizationName.isEmpty ||
+    if (username.isEmpty ||
         email.isEmpty ||
         password.isEmpty ||
         registration.isEmpty ||
@@ -168,8 +45,7 @@ class _OrganizationSignupPageState extends State<OrganizationSignupPage> {
     }
 
     // Validation checks for organizationName
-    if (_containsSpecialCharacters(organizationName) ||
-        _containsNumbers(organizationName)) {
+    if (_containsSpecialCharacters(username) || _containsNumbers(username)) {
       _showErrorSnackBar(
           "Organization name can only contain alphabetic characters.");
       return;
@@ -202,7 +78,7 @@ class _OrganizationSignupPageState extends State<OrganizationSignupPage> {
       // Check if the organization name already exists
       QuerySnapshot orgNameSnapshot = await FirebaseFirestore.instance
           .collection('organizations')
-          .where('organizationName', isEqualTo: organizationName)
+          .where('username', isEqualTo: username)
           .get();
 
       if (orgNameSnapshot.docs.isNotEmpty) {
@@ -247,7 +123,7 @@ class _OrganizationSignupPageState extends State<OrganizationSignupPage> {
 
       // Create a map with the user data
       Map<String, dynamic> userData = {
-        'organizationName': organizationName,
+        'username': username,
         'email': email,
         'password': password,
         'registrationNumber': int.parse(registration),
@@ -259,21 +135,29 @@ class _OrganizationSignupPageState extends State<OrganizationSignupPage> {
       };
 
       // Add user data to the pending collection
-      await FirebaseFirestore.instance.collection('pending').add(userData);
+      DocumentReference docRef =
+          await FirebaseFirestore.instance.collection('pending').add(userData);
+
+      print('Document created with ID: ${docRef.id}'); // Log the document ID
+
+      // Send verification email
+      await FirebaseAuth.instance.currentUser?.sendEmailVerification();
 
       // Show successful signup toast message
       Utils().toastMessage(
-          "Signup successful You have to wait for admin Approval.");
+          "Signup successful. Please check your email for verification.");
 
-      // Navigate to the login page after successful signup
+      // Navigate to the email verification page
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => OrgnizationLoginScreen(),
+          builder: (context) => VerifyEmailScreen(
+            userId: userId,
+          ),
         ),
       );
     } catch (e) {
       print('Error during signup: $e');
-      // Handle error
+      _showErrorSnackBar("An error occurred during signup. Please try again.");
     }
   }
 
@@ -375,7 +259,7 @@ class _OrganizationSignupPageState extends State<OrganizationSignupPage> {
               ),
               SizedBox(height: 20),
               buildTextField(
-                _organizationNameController,
+                _usernameController,
                 'Organization Name',
                 Icons.business,
               ),

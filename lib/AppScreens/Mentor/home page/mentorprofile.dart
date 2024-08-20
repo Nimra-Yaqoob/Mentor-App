@@ -1,12 +1,9 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mentorapp/AppScreens/Mentor/Calender/sessioncalender.dart';
 import 'package:mentorapp/AppScreens/Mentor/home%20page/allmentees.dart';
 import 'package:mentorapp/AppScreens/constant.dart';
 import 'mentorhomepage.dart';
@@ -235,11 +232,24 @@ class _MentorProfileState extends State<MentorProfile> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
                                 child: _image != null
-                                    ? Image.file(_image!)
-                                    : (data['imageUrl'] != null
-                                        ? Image.network(data['imageUrl'])
-                                        : Image.asset(
-                                            'assets/placeholder_image.png')),
+                                    ? Image.file(
+                                        _image!,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : (data['imageUrl'] != null &&
+                                            data['imageUrl']!.isNotEmpty
+                                        ? Image.network(
+                                            data['imageUrl']!,
+                                            fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Icon(Icons.account_circle,
+                                                  size: 110,
+                                                  color: Colors.grey);
+                                            },
+                                          )
+                                        : Icon(Icons.account_circle,
+                                            size: 110, color: Colors.grey)),
                               ),
                             ),
                             Positioned(
@@ -322,26 +332,6 @@ class _MentorProfileState extends State<MentorProfile> {
                       style: TextStyle(
                         fontSize: 14,
                       ),
-                    ),
-                    SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        ElevatedButton.icon(
-                          onPressed: () =>
-                              Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => CalendarPage(),
-                            ),
-                          ),
-                          icon: Icon(Icons.calendar_month, color: Colors.white),
-                          label: Text('Booked Sessions'),
-                          style: ElevatedButton.styleFrom(
-                            primary: primaryColor,
-                            onPrimary: Colors.white,
-                          ),
-                        ),
-                      ],
                     ),
                     SizedBox(height: 16),
                     Divider(),

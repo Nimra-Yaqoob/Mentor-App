@@ -107,6 +107,7 @@ class _MentorsCardState extends State<MentorsCard> {
 
   Future<void> _toggleEnrollment() async {
     String userId = SessionManager.getUserId();
+    String userName = SessionManager.getUserName(); // Get the username
     if (userId.isEmpty) return;
 
     DocumentSnapshot menteeSnapshot = await FirebaseFirestore.instance
@@ -139,7 +140,11 @@ class _MentorsCardState extends State<MentorsCard> {
           .collection('mentors')
           .doc(widget.mentorId)
           .collection('enrollments')
-          .add({'userId': userId, 'imageUrl': userImageUrl});
+          .add({
+        'userId': userId,
+        'imageUrl': userImageUrl,
+        'userName': userName
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Mentee Successfully enrolled')),
       );

@@ -1,5 +1,7 @@
+////////same organization
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mentorapp/AppScreens/constant.dart';
 import 'package:mentorapp/firebase_services/session_manager.dart';
 import 'package:mentorapp/AppScreens/Mentee/home/meprofile.dart'; // Import the file where MeProfile class is defined
 
@@ -35,7 +37,7 @@ class _OrganizationMentorsState extends State<OrganizationMentors> {
                   final mentorData = snapshot.data![index];
                   return MentorCard(
                     fullName: mentorData['fullName'],
-                    organization: mentorData['organization'],
+                    organization: mentorData['inviteCode'],
                     mentorId: mentorData['mentorId'], // Pass mentorId
                   );
                 },
@@ -53,11 +55,11 @@ class _OrganizationMentorsState extends State<OrganizationMentors> {
 
   Future<List<Map<String, dynamic>>> fetchMentorsData() async {
     try {
-      String organizationName = await getOrganizationName();
+      String username = await getOrganizationName();
 
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('mentors')
-          .where('organization', isEqualTo: organizationName)
+          .where('inviteCode', isEqualTo: username)
           .get();
 
       List<Map<String, dynamic>> mentorsData = [];
@@ -66,14 +68,14 @@ class _OrganizationMentorsState extends State<OrganizationMentors> {
           Map<String, dynamic> mentorData = {
             'mentorId': doc.id, // Use document ID as mentor ID
             'fullName': doc['fullName'],
-            'organization': doc['organization'],
+            'inviteCode': doc['inviteCode'],
           };
           mentorsData.add(mentorData);
         }
       }
       return mentorsData;
     } catch (e) {
-      print('Error fetching mentor data: $e');
+      print('Error fetching invite code: $e');
       return [];
     }
   }
@@ -87,12 +89,12 @@ class _OrganizationMentorsState extends State<OrganizationMentors> {
           .get();
 
       if (snapshot.exists) {
-        return snapshot['organizationName'];
+        return snapshot['uniqueCode'];
       } else {
-        return 'Organization not found';
+        return 'uniqueCode not found';
       }
     } catch (e) {
-      print('Error fetching organization name: $e');
+      print('Error fetching uniqueCode : $e');
       return 'Error';
     }
   }
@@ -132,6 +134,10 @@ class MentorCard extends StatelessWidget {
               ),
             );
           },
+          style: ElevatedButton.styleFrom(
+            primary: secondaryColor, // Set background color to blue
+            onPrimary: Colors.white, // Set text color to white
+          ),
           child: Text('Track'),
         ),
       ),

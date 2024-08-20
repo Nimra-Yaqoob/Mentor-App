@@ -48,7 +48,7 @@ class _NavDrawerState extends State<NavDrawer> {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text(organizationData?['organizationName'] ?? ''),
+            accountName: Text(organizationData?['username'] ?? ''),
             accountEmail: Text(organizationData?['email'] ?? ''),
             currentAccountPicture: CircleAvatar(
               backgroundImage:

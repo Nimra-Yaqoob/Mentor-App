@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:mentorapp/AppScreens/Mentor/Calender/sessioncalender.dart';
 import 'package:mentorapp/AppScreens/Mentor/home%20page/introslider.dart';
 import 'package:mentorapp/AppScreens/Mentor/home%20page/mentorprofile.dart';
 import 'package:mentorapp/AppScreens/Mentor/home%20page/mentorsetting.dart';
 import 'package:mentorapp/AppScreens/Mentor/home%20page/navdrawer.dart';
-import 'package:mentorapp/AppScreens/chat/chathome.dart';
 import 'package:mentorapp/AppScreens/constant.dart';
+import 'package:mentorapp/AppScreens/Mentor/Chat(Mentor)/Chat(Mentor)/chatlist.dart';
 
 import 'package:mentorapp/firebase_services/session_manager.dart';
+import 'package:mentorapp/AppScreens/testmeet/Role.dart';
 
 class MentorHomePage extends StatefulWidget {
   const MentorHomePage({Key? key}) : super(key: key);
@@ -212,7 +212,7 @@ class _MentorHomePageState extends State<MentorHomePage> {
                 text: 'Sessions',
                 onPressed: () => Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => CalendarPage(),
+                    builder: (context) => Role(),
                   ),
                 ),
               ),
@@ -221,7 +221,7 @@ class _MentorHomePageState extends State<MentorHomePage> {
                 text: 'Inbox',
                 onPressed: () => Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => ChatHome(),
+                    builder: (context) => ChatsListPage(),
                   ),
                 ),
               ),

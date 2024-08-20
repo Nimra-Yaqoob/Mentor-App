@@ -1,45 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:flutter/services.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:get/get_navigation/src/root/get_material_app.dart';
-// import 'package:mentorapp/AppScreens/startingScreens/loadingscreen.dart';
-// // import 'Utils/utils.dart';
-// // import 'firebase_options.dart';
-// // import 'package:zego_zimkit/zego_zimkit.dart';
-
-// // void main() async {
-// //   WidgetsFlutterBinding.ensureInitialized();
-
-// //   await Firebase.initializeApp(
-// //     options: DefaultFirebaseOptions.currentPlatform,
-// //   );
-// //   await ZIMKit().init(appID: Utils.appID, appSign: Utils.appSign);
-// //   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-// //     statusBarColor: Colors.transparent,
-// //     statusBarIconBrightness: Brightness.light,
-// //   ));
-// //   runApp(const MyApp());
-// // }
-
-// // class MyApp extends StatelessWidget {
-// //   const MyApp({super.key});
-
-// //   // This widget is the root of your application.
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     return ScreenUtilInit(
-// //       child: GetMaterialApp(
-// //         title: 'Mentor App',
-// //         home: LoadingScreen(),
-// //         debugShowCheckedModeBanner: false,
-// //       ),
-// //       designSize: const Size(360, 640),
-// //     );
-// //   }
-// // }
-
-//warda
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -80,7 +38,9 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-// // for admin
+
+/// for admin
+
 // import 'package:mentorapp/AppScreens/Admin/adminlogin.dart';
 // import 'package:mentorapp/AppScreens/Admin/mentees.dart';
 // import 'package:mentorapp/AppScreens/Admin/mentors.dart';

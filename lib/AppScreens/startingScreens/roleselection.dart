@@ -196,61 +196,61 @@ class _RoleSelectionState extends State<RoleSelection> {
     );
   }
 
-  Widget _AdminButton() {
-    return Container(
-      child: Column(
-        children: [
-          SizedBox(
-            height: 10,
-          ),
-          Center(
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => const AdminLogin(),
-                  ),
-                );
-              },
-              child: Container(
-                height: 50,
-                width: 300,
-                decoration: BoxDecoration(
-                  color: primaryColor,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.blueGrey,
-                      spreadRadius: 1,
-                      blurRadius: 8,
-                      offset: Offset(4, 4),
-                    ),
-                    BoxShadow(
-                      color: Colors.white,
-                      spreadRadius: 2,
-                      blurRadius: 8,
-                      offset: Offset(-4, -4),
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: Text(
-                    "Admin",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _AdminButton() {
+  //   return Container(
+  //     child: Column(
+  //       children: [
+  //         SizedBox(
+  //           height: 10,
+  //         ),
+  //         Center(
+  //           child: InkWell(
+  //             onTap: () {
+  //               Navigator.of(context).pushReplacement(
+  //                 MaterialPageRoute(
+  //                   builder: (context) => const AdminLogin(),
+  //                 ),
+  //               );
+  //             },
+  //             child: Container(
+  //               height: 50,
+  //               width: 300,
+  //               decoration: BoxDecoration(
+  //                 color: primaryColor,
+  //                 borderRadius: BorderRadius.circular(16),
+  //                 boxShadow: [
+  //                   BoxShadow(
+  //                     color: Colors.blueGrey,
+  //                     spreadRadius: 1,
+  //                     blurRadius: 8,
+  //                     offset: Offset(4, 4),
+  //                   ),
+  //                   BoxShadow(
+  //                     color: Colors.white,
+  //                     spreadRadius: 2,
+  //                     blurRadius: 8,
+  //                     offset: Offset(-4, -4),
+  //                   ),
+  //                 ],
+  //               ),
+  //               child: Center(
+  //                 child: Text(
+  //                   "Admin",
+  //                   style: TextStyle(
+  //                     color: Colors.white,
+  //                     fontWeight: FontWeight.w600,
+  //                     fontSize: 18,
+  //                     letterSpacing: 1,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -283,10 +283,10 @@ class _RoleSelectionState extends State<RoleSelection> {
           SizedBox(
             height: 10,
           ),
-          _AdminButton(),
-          SizedBox(
-            height: 10,
-          ),
+          // _AdminButton(),
+          // SizedBox(
+          //   height: 10,
+          // ),
         ],
       ),
     );

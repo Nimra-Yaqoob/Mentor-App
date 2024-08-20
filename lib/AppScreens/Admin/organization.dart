@@ -47,8 +47,7 @@ class Organization extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                                "Organization Name: ${data['organizationName']}"),
+                            Text("Organization Name: ${data['username']}"),
                             IconButton(
                               icon: Icon(Icons.delete, color: Colors.red),
                               onPressed: () {

@@ -12,6 +12,7 @@ class SessionManager {
   static String _userId = '';
   static String _userImageUrl = '';
   static String _userName = ''; // Add a variable to store the user's name
+  static String _userEmail = '';
 
   // Method to set user ID
   static void setUserId(String userId) {
@@ -41,5 +42,15 @@ class SessionManager {
   // Method to get user name
   static String getUserName() {
     return _userName;
+  }
+
+  // Method to set user email
+  static void setUserEmail(String userEmail) {
+    _userEmail = userEmail;
+  }
+
+  // Method to get user email
+  static String getUserEmail() {
+    return _userEmail;
   }
 }

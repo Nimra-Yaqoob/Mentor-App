@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mentorapp/AppScreens/Mentor/Chat(Mentor)/Chat(Mentor)/chatlist.dart';
 import 'package:mentorapp/AppScreens/Mentor/home%20page/mentorhomepage.dart';
 import 'package:mentorapp/AppScreens/Mentor/home%20page/mentorsetting.dart';
 import 'package:mentorapp/AppScreens/constant.dart';
@@ -82,17 +83,14 @@ class _NavBarState extends State<NavBar> {
           ListTile(
             leading: Icon(Icons.wechat),
             title: Text("Messages"),
-            onTap: () => print('Message tapped'),
-          ),
-          ListTile(
-            leading: Icon(Icons.event_available),
-            title: Text("Sessions"),
-            onTap: () => print('Session tapped'),
-          ),
-          ListTile(
-            leading: Icon(Icons.people_outline_rounded),
-            title: Text("Organizations"),
-            onTap: () => print('Organization tapped'),
+            onTap: () {
+              String userId = SessionManager.getUserId();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => ChatsListPage(),
+                ),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.settings_outlined),

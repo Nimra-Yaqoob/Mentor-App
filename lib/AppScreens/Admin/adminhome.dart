@@ -8,8 +8,6 @@ import 'mentees.dart';
 import 'organization.dart';
 
 class AdminPanel extends StatefulWidget {
-  // const AdminPanel({Key? key}) : super(key: key);
-
   static const String id = "webmain";
 
   @override
@@ -64,18 +62,22 @@ class _AdminPanelState extends State<AdminPanel> {
           AdminMenuItem(
             title: "Total Users",
             route: Dashboard.id,
+            icon: Icons.group, // Add icon
           ),
           AdminMenuItem(
             title: "Organizations",
             route: Organization.id,
+            icon: Icons.business, // Add icon
           ),
           AdminMenuItem(
             title: "Mentors",
             route: Mentor.id,
+            icon: Icons.school, // Add icon
           ),
           AdminMenuItem(
             title: "Mentees",
             route: Mentee.id,
+            icon: Icons.person, // Add icon
           ),
         ],
         selectedRoute: Dashboard.id,

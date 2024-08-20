@@ -2,14 +2,15 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:mentorapp/AppScreens/Meeting/meetinghome.dart';
+// import 'package:mentorapp/AppScreens/Meeting/meetinghome.dart';
 import 'package:mentorapp/AppScreens/Mentee/home/Widgets/actionbutton.dart';
 import 'package:mentorapp/AppScreens/Mentee/home/Widgets/allmentors.dart';
 import 'package:mentorapp/AppScreens/Mentee/home/Widgets/navdrawer.dart';
 import 'package:mentorapp/AppScreens/Mentee/home/followed.dart';
-import 'package:mentorapp/AppScreens/chat/chathome.dart';
 import 'package:mentorapp/AppScreens/constant.dart';
+import 'package:mentorapp/AppScreens/Mentee/Chat(Mentee)/chatlist.dart';
 import 'package:mentorapp/firebase_services/session_manager.dart';
+import 'package:mentorapp/AppScreens/testmeet/joinButton.dart';
 import 'Widgets/slider.dart';
 import 'categories/academiapage.dart';
 import 'categories/businesspage.dart';
@@ -254,7 +255,7 @@ class _MenteeHomeState extends State<MenteeHome> {
               text: 'Sessions',
               onPressed: () => Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => HomePage(),
+                  builder: (context) => JoinMeetingButton(),
                 ),
               ),
             ),
@@ -263,7 +264,7 @@ class _MenteeHomeState extends State<MenteeHome> {
               text: 'Inbox',
               onPressed: () => Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => ChatHome(),
+                  builder: (context) => ChatsListPage(),
                 ),
               ),
             ),

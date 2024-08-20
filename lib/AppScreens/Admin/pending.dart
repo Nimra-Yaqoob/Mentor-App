@@ -24,7 +24,7 @@ class PendingOrganizationList extends StatelessWidget {
             final docId = organizations[index].id;
             return OrganizationCard(
               documentId: docId, // Pass document ID
-              organizationName: org['organizationName'],
+              username: org['username'],
               email: org['email'],
               domainLink: org['domainLink'],
               registrationNumber: org['registrationNumber'],
@@ -43,7 +43,7 @@ class PendingOrganizationList extends StatelessWidget {
 // ignore: must_be_immutable
 class OrganizationCard extends StatefulWidget {
   final String documentId; // Add document ID field
-  final String organizationName;
+  final String username;
   final String email;
   final String domainLink;
   final int registrationNumber;
@@ -54,7 +54,7 @@ class OrganizationCard extends StatefulWidget {
 
   OrganizationCard({
     required this.documentId, // Initialize document ID field
-    required this.organizationName,
+    required this.username,
     required this.email,
     required this.domainLink,
     required this.registrationNumber,
@@ -73,7 +73,7 @@ class _OrganizationCardState extends State<OrganizationCard> {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text(widget.organizationName),
+        title: Text(widget.username),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -114,9 +114,9 @@ class _OrganizationCardState extends State<OrganizationCard> {
                   // Store organization data in 'organizations' collection
                   await FirebaseFirestore.instance
                       .collection('organizations')
-                      .doc(widget.organizationName)
+                      .doc(widget.username)
                       .set({
-                    'organizationName': widget.organizationName,
+                    'username': widget.username,
                     'email': widget.email,
                     'domainLink': widget.domainLink,
                     'registrationNumber': widget.registrationNumber,

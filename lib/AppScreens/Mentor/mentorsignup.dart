@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mentorapp/AppScreens/Mentor/mentor_verifyEmail.dart';
 import 'package:mentorapp/AppScreens/constant.dart';
+
 import 'mentorlogin.dart';
 
 const int minNameLength = 2;
@@ -31,10 +33,8 @@ class _MentorSignupState extends State<MentorSignup> {
       TextEditingController();
   final TextEditingController _experienceDescriptionTextFieldController =
       TextEditingController();
-
   final TextEditingController _linkedinProfileLinkController =
       TextEditingController();
-  final TextEditingController _domainLinkController = TextEditingController();
   final TextEditingController _inviteCodeController = TextEditingController();
   final TextEditingController _studyDetailsController = TextEditingController();
 
@@ -89,8 +89,7 @@ class _MentorSignupState extends State<MentorSignup> {
 
       case 1:
         if (_experienceTextFieldController.text.isEmpty) {
-          errorMessage =
-              'Organization Name cannot be empty If you are not from organization just write Null in the field.';
+          errorMessage = 'Organization Name cannot be empty.';
         } else if (_experienceDescriptionTextFieldController.text.isEmpty) {
           errorMessage = 'Description cannot be empty';
         } else if (dropdownValue2 == 'Category') {
@@ -382,6 +381,9 @@ class _MentorSignupState extends State<MentorSignup> {
           password: password,
         );
 
+        // Send email verification link
+        await userCredential.user!.sendEmailVerification();
+
         String userId = userCredential.user!.uid;
         CollectionReference mentorsCollection =
             FirebaseFirestore.instance.collection('mentors');
@@ -402,7 +404,6 @@ class _MentorSignupState extends State<MentorSignup> {
           "category": dropdownValue2,
           "organization": _experienceTextFieldController.text.trim(),
           "inviteCode": _inviteCodeController.text.trim(), // Added invite code
-          "domain": _domainLinkController.text.trim(),
           "linkedinProfile": _linkedinProfileLinkController.text.trim(),
           "studyDetails":
               _studyDetailsController.text.trim(), // Added study details
@@ -411,6 +412,7 @@ class _MentorSignupState extends State<MentorSignup> {
           // Add other fields as needed
         });
 
+        // Clear input fields after successful signup
         _fullNameController.clear();
         _emailController.clear();
         _passwordController.clear();
@@ -418,13 +420,15 @@ class _MentorSignupState extends State<MentorSignup> {
         _experienceTextFieldController.clear();
         _experienceDescriptionTextFieldController.clear();
         _linkedinProfileLinkController.clear();
-        _domainLinkController.clear();
         _inviteCodeController.clear();
         _studyDetailsController.clear();
 
+        // Navigate to the email verification screen
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => MentorLoginScreen(),
+            builder: (context) => VerifyEmailScreen(
+              userId: userId,
+            ),
           ),
         );
       }
@@ -568,30 +572,30 @@ class _MentorSignupState extends State<MentorSignup> {
                 ),
               ],
             ),
-            child: TextFormField(
-              decoration: InputDecoration(
-                hintText: "Domain",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Colors.white,
-              ),
-              controller: _domainLinkController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your organization domain link';
-                }
-                RegExp regExp = RegExp(
-                    r'^https?:\/\/(?:www\.)?linkedin\.com\/(?:in|pub|profile)\/[a-zA-Z0-9-]+\/?$');
-                if (!regExp.hasMatch(value)) {
-                  return 'Please enter a valid domain link';
-                }
-                return null;
-              },
-              keyboardType: TextInputType.url,
-            ),
+            // child: TextFormField(
+            //   decoration: InputDecoration(
+            //     hintText: "Domain",
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(10.0),
+            //       borderSide: BorderSide.none,
+            //     ),
+            //     filled: true,
+            //     fillColor: Colors.white,
+            //   ),
+            //   controller: _domainLinkController,
+            //   validator: (value) {
+            //     if (value == null || value.isEmpty) {
+            //       return 'Please enter your organization domain link';
+            //     }
+            //     RegExp regExp = RegExp(
+            //         r'^https?:\/\/(?:www\.)?linkedin\.com\/(?:in|pub|profile)\/[a-zA-Z0-9-]+\/?$');
+            //     if (!regExp.hasMatch(value)) {
+            //       return 'Please enter a valid domain link';
+            //     }
+            //     return null;
+            //   },
+            //   keyboardType: TextInputType.url,
+            // ),
           ),
           SizedBox(height: 16),
           Container(
@@ -915,6 +919,30 @@ class _MentorSignupState extends State<MentorSignup> {
             return;
           }
         } else if (currentStep == 1) {
+          // Check if the Invite Code field is empty
+          String inviteCode = _inviteCodeController.text.trim();
+          if (inviteCode.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Please enter the Invite Code to proceed'),
+                backgroundColor: Colors.red,
+              ),
+            );
+            return;
+          }
+
+          // Check if the invite code matches any organization's unique code in Firestore
+          bool isInviteCodeValid = await checkInviteCode(inviteCode);
+          if (!isInviteCodeValid) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Incorrect Invite Code. Please try again.'),
+                backgroundColor: Colors.red,
+              ),
+            );
+            return;
+          }
+
           // Check if LinkedIn profile field is empty or contains an invalid link
           String linkedinProfileLink =
               _linkedinProfileLinkController.text.trim();
@@ -948,6 +976,15 @@ class _MentorSignupState extends State<MentorSignup> {
         _signUpWithEmailAndPassword();
       }
     }
+  }
+
+  Future<bool> checkInviteCode(String inviteCode) async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('organizations')
+        .where('uniqueCode', isEqualTo: inviteCode)
+        .get();
+
+    return snapshot.docs.isNotEmpty;
   }
 
   void cancelStep() {

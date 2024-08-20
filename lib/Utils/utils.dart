@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class Utils {
-  static const appID = 499046670;
+  static const appID = 1395657183;
   static const appSign =
-      "b0609483f8b536f47acf106f93ea0cc916ca14b8bf3e8be60869ec68db7da4b0";
+      "5fe679c86eeb5506272c446dafb4d96ad6f78f2daee430a00d9b153b6db96327";
   void toastMessage(String message) {
     Fluttertoast.showToast(
         msg: message,

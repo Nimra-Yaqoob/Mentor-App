@@ -1,23 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mentorapp/AppScreens/Mentor/home%20page/mentorhomepage.dart';
-import 'package:mentorapp/AppScreens/Mentor/home%20page/navdrawer.dart';
+import 'package:mentorapp/AppScreens/Organization/organizationavdrawer.dart';
+import 'package:mentorapp/AppScreens/Organization/organizationhome.dart';
 import 'package:mentorapp/AppScreens/constant.dart';
 import 'package:mentorapp/AppScreens/startingScreens/roleselection.dart';
 import 'package:mentorapp/firebase_services/session_manager.dart';
 
-class MentorSetting extends StatefulWidget {
-  const MentorSetting({Key? key});
+class OrganizationSetting extends StatefulWidget {
+  const OrganizationSetting({Key? key}) : super(key: key);
 
   @override
-  _MentorSettingState createState() => _MentorSettingState();
+  _OrganizationSettingState createState() => _OrganizationSettingState();
 }
 
-class _MentorSettingState extends State<MentorSetting> {
+class _OrganizationSettingState extends State<OrganizationSetting> {
   final auth = FirebaseAuth.instance;
   User? currentUser;
-  Map<String, dynamic>? mentorData;
+  Map<String, dynamic>? organizationData;
 
   @override
   void initState() {
@@ -31,26 +31,26 @@ class _MentorSettingState extends State<MentorSetting> {
 
     try {
       final snapshot = await FirebaseFirestore.instance
-          .collection('mentors')
+          .collection('organizations')
           .doc(userId)
           .get();
 
       if (snapshot.exists) {
         setState(() {
-          mentorData = snapshot.data() as Map<String, dynamic>?;
+          organizationData = snapshot.data() as Map<String, dynamic>?;
         });
       } else {
-        throw Exception('Mentor not found.');
+        throw Exception('Organization not found.');
       }
     } catch (e) {
-      print('Error fetching mentor data: $e');
+      print('Error fetching Organization data: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavBar(),
+      drawer: NavDrawer(),
       appBar: AppBar(
         leading: Builder(builder: (context) {
           return IconButton(
@@ -73,6 +73,7 @@ class _MentorSettingState extends State<MentorSetting> {
           padding: const EdgeInsets.symmetric(vertical: 10.5, horizontal: 24.0),
           child: Column(
             children: [
+              // Display profile image or icon
               Stack(
                 children: [
                   SizedBox(
@@ -80,10 +81,10 @@ class _MentorSettingState extends State<MentorSetting> {
                     height: 110,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child: mentorData?['imageUrl'] != null &&
-                              mentorData!['imageUrl']!.isNotEmpty
+                      child: organizationData?['imageUrl'] != null &&
+                              organizationData!['imageUrl']!.isNotEmpty
                           ? Image.network(
-                              mentorData!['imageUrl']!,
+                              organizationData!['imageUrl']!,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 return const Icon(Icons.account_circle,
@@ -97,17 +98,16 @@ class _MentorSettingState extends State<MentorSetting> {
                 ],
               ),
               const SizedBox(height: 10),
-              // Displaying user's name
+              // Displaying username and email
               Text(
-                currentUser?.displayName ?? mentorData?['fullName'] ?? '',
-                style: Theme.of(context).textTheme.bodyMedium,
+                organizationData?['username'] ??
+                    currentUser?.displayName ??
+                    'N/A',
+                style: Theme.of(context).textTheme.headline6,
               ),
-              // Displaying user's email
               Text(
-                currentUser?.email ??
-                    mentorData?['email'] ??
-                    '', // Fetching user's email
-                style: Theme.of(context).textTheme.bodyText2,
+                currentUser?.email ?? organizationData?['email'] ?? 'N/A',
+                style: Theme.of(context).textTheme.subtitle1,
               ),
               const SizedBox(height: 15),
               const Divider(),
@@ -120,7 +120,7 @@ class _MentorSettingState extends State<MentorSetting> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MentorHomePage(),
+                      builder: (context) => OrganizationHome(),
                     ),
                   );
                 },
@@ -188,7 +188,7 @@ class ProfileMenu extends StatelessWidget {
     required this.onPress,
     this.endIcon = true,
     this.textColor,
-  });
+  }) : super(key: key);
 
   final String title;
   final IconData icon;
