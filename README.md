@@ -1,6 +1,6 @@
 # mentorapp
 
-A new Flutter project.
+A new Flutter project which use flutter with firebase.
 
 ## Getting Started
 
